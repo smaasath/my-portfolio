@@ -8,7 +8,7 @@ const createI18nContent = (t) => {
             return `${this.firstName} ${this.lastName}`;
         },
         role:      t("person.role"),
-        avatar:    '/images/avatar.jpg',
+        avatar:    '/images/avatar.png',
         location:  'Asia/Jakarta',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
         languages: ['English', 'Bahasa']  // optional: Leave the array empty if you don't want to display languages
     }
@@ -83,7 +83,7 @@ const createI18nContent = (t) => {
                     achievements: t("about.work.experiences.FLY.achievements").split(";"),
                     images: [ // optional: leave the array empty if you don't want to display images
                         {
-                            src: '/images/projects/project-01/cover-01.jpg',
+                            src: '/images/projects/project-01/1.jpg',
                             alt: 'Once UI Project',
                             width: 16,
                             height: 9
