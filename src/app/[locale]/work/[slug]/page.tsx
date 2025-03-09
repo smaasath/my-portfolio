@@ -49,9 +49,7 @@ export function generateMetadata({ params: { slug, locale } }: WorkParams) {
 		image,
 		team,
 	} = post.metadata
-	let ogImage = image
-		? `https://${baseURL}${image}`
-		: `https://${baseURL}/og?title=${title}`;
+	let ogImage = `https://my-portfolio-git-master-smaasaths-projects.vercel.app/myog.jpg`;
 
 	return {
 		title,

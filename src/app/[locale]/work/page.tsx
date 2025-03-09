@@ -14,7 +14,7 @@ export async function generateMetadata(
 
 	const title = work.title;
 	const description = work.description;
-	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+	const ogImage = `https://my-portfolio-git-master-smaasaths-projects.vercel.app/myog.jpg`;
 
 	return {
 		title,
@@ -63,7 +63,7 @@ export default function Work(
                         headline: work.title,
                         description: work.description,
                         url: `https://${baseURL}/projects`,
-                        image: `${baseURL}/og?title=Design%20Projects`,
+                        image: `https://my-portfolio-git-master-smaasaths-projects.vercel.app/myog.jpgs`,
                         author: {
                             '@type': 'Person',
                             name: person.name,

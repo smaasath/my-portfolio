@@ -13,7 +13,7 @@ export async function generateMetadata(
 
 	const title = gallery.title;
 	const description = gallery.description;
-	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+	const ogImage = `https://my-portfolio-git-master-smaasaths-projects.vercel.app/myog.jpg`;
 
 	return {
 		title,
