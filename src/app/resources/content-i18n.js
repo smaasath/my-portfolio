@@ -2,15 +2,15 @@ import { InlineCode } from "@/once-ui/components";
 
 const createI18nContent = (t) => {
     const person = {
-        firstName: 'Aasath',
-        lastName:  'Yu',
+        firstName: 'Mohamed',
+        lastName:  'Aasath',
         get name() {
             return `${this.firstName} ${this.lastName}`;
         },
         role:      t("person.role"),
         avatar:    '/images/avatar.png',
-        location:  'Asia/Jakarta',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-        languages: ['English', 'Bahasa']  // optional: Leave the array empty if you don't want to display languages
+        location:  'Sri Lanka',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+        languages: ['English']  // optional: Leave the array empty if you don't want to display languages
     }
 
     const newsletter = {
