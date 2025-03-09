@@ -2,7 +2,7 @@ import { InlineCode } from "@/once-ui/components";
 
 const createI18nContent = (t) => {
     const person = {
-        firstName: 'Selene',
+        firstName: 'Aasath',
         lastName:  'Yu',
         get name() {
             return `${this.firstName} ${this.lastName}`;
