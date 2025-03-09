@@ -1,4 +1,4 @@
-const baseURL = 'demo.magic-portfolio.com'
+const baseURL = 'https://my-portfolio-git-master-smaasaths-projects.vercel.app/'
 
 // Enable localization
 const i18n = false;
