@@ -1,0 +1,178 @@
+---
+title: "Mastering Deep Linking A Comprehensive Guide for Web and Mobile Apps"
+publishedAt: "2025-02-07"
+image: "/images/projects/project-01/blog.png"
+summary: "Deep linking enables direct navigation to web to app pages. This guide covers implementation, challenges, best practices for web & mobile"
+tag: "Article"
+---
+
+## Introduction
+Deep linking is a technique that allows users to navigate directly to a specific page or content within a mobile or web application, rather than just opening the home page. It enhances user experience by providing seamless redirection from external sources like websites, social media, emails, or search engines.
+
+There are three main types of deep linking:
+
+1. **Traditional Deep Linking** — Works only if the app is installed. Clicking a deep link opens the specific page inside the app.
+2. **Deferred Deep Linking** — Redirects users to the App Store or Play Store if the app is not installed and then opens the intended content after installation.
+3. **Universal/App Links** — Uses platform-specific solutions (Apple Universal Links for iOS and Android App Links) to automatically open the app when a supported URL is clicked.
+
+---
+
+## Setting Up Deep Linking in Web Apps
+
+### Creating Site Association/Digital Asset Link Files
+To create deep linking in a web application, we need to maintain an association/Digital Asset Links file. When our website link is entered into a mobile browser, whether it’s iOS or Android, if the association file is available, the browser will open our app. For example, if you search for any reel link in a web browser, it will open in the Instagram app.
+
+### iOS: Creating the Apple App Site Association (AASA) File
+
+#### 1. Create the `.well-known` Directory
+The AASA file (without an extension) must be placed in a `.well-known` directory at the root of your domain. Your folder structure should look like this:
+
+```
+/your-domain.com
+ ├── .well-known/
+ │   ├── apple-app-site-association
+```
+
+#### 2. Create the AASA JSON File
+Create an `apple-app-site-association` file and add the following JSON content:
+
+```json
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "TEAM_ID.BUNDLE_ID",
+                "paths": [
+                    "/products/*",
+                    "/cart",
+                    "/checkout",
+                    "NOT /admin/*"
+                ]
+            }
+        ]
+    }
+}
+```
+
+#### Explanation of Fields
+- **appID**: This is a combination of your Apple Developer Team ID and the app’s Bundle ID. Example: `"appID": "ABCDE12345.com.yourcompany.webshop"`
+- **paths**: Defines which URLs should open inside the app.
+    - `"/*"` – Opens all pages in the app.
+    - `"/products/*"` – Opens any URL under `/products/` in the app.
+    - `"NOT /admin/*"` – Ensures that `/admin/` pages do not open in the app.
+
+#### 3. Host the AASA File on Your Web Server
+The file must be publicly accessible over HTTPS:
+
+```
+https://your-domain.com/.well-known/apple-app-site-association
+```
+
+---
+
+### Android: Creating the Digital Asset Links File (DAL)
+The Digital Asset Links (DAL) file is required to enable Android App Links, allowing links to open directly in the app instead of a browser when the app is installed. This file is hosted on your domain and verifies the association between your website and your Android app.
+
+#### 1. Create the `.well-known` Directory
+
+```
+/your-domain.com
+ ├── .well-known/
+ │   ├── assetlinks.json
+```
+
+#### 2. Create the `assetlinks.json` File
+Inside the `.well-known` directory, create a file named `assetlinks.json` and add the following JSON content:
+
+```json
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.yourcompany.webshop",
+      "sha256_cert_fingerprints": [
+        "AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:12:34"
+      ]
+    }
+  }
+]
+```
+
+#### Explanation of Fields
+- **relation**: Defines the type of permission granted. `"delegate_permission/common.handle_all_urls"` ensures all links matching this domain open in the app.
+- **package_name**: The Android package name of your app (found in `AndroidManifest.xml`).
+- **sha256_cert_fingerprints**: The SHA-256 fingerprint of your app’s signing certificate.
+
+#### 3. Get Your SHA-256 Certificate Fingerprint
+**Method 1:** From Google Play Console
+- Go to **Google Play Console** → **Setup** → **App Signing** → Copy the SHA-256 certificate fingerprint.
+
+**Method 2:** Using the Command Line
+Run the following command:
+
+```bash
+keytool -list -v -keystore your-key.jks -alias your-alias -storepass your-storepass
+```
+
+---
+
+## Implementing Deep Linking in Mobile Apps
+
+### Android: App Links and Handling `autoVerify` Attribute
+Add the following `intent-filter` inside the `<activity>` tag in `AndroidManifest.xml`:
+
+```xml
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="https"
+          android:host="your-domain.com"
+          android:pathPrefix="/products" />
+</intent-filter>
+```
+
+---
+
+### iOS Configurations
+For iOS, Universal Links are used to handle deep linking. These links allow iOS apps to open directly from a web link without opening Safari first.
+
+**Enable Associated Domains in Xcode**
+- Open your Xcode project.
+- Navigate to **Signing & Capabilities**.
+- Click the **“+”** button → Add **Associated Domains**.
+- Add the domain in this format: `applinks:your-domain.com`
+
+---
+
+## Challenges and Solutions in Deep Linking
+
+### 1. URL Pattern Discrepancies
+**Issue:** URL structures may differ between web and mobile apps, causing deep link failures.
+
+**Solution:** Standardize URL structures across both platforms or implement dynamic path mapping.
+
+### 2. Security Concerns
+**Issue:** Deep linking can expose sensitive pages to unauthorized users.
+
+**Solution:** Implement authentication checks and token-based validation.
+
+### 3. Expo CLI and Testing Bottlenecks
+**Issue:** Testing deep linking in Expo can be challenging since the development server does not fully simulate deep linking behavior.
+
+**Solution:** Test with Expo Go and use ADB commands for Android and Universal Link Simulator in Xcode for iOS.
+
+---
+
+## Conclusion
+Deep linking is a crucial feature for modern webshops, enhancing user experience by enabling direct navigation to specific in-app content. Implementing it effectively requires addressing technical challenges, security concerns, and testing limitations.
+
+**Summary of Key Insights:**
+- Deep linking improves user engagement and conversion rates.
+- Correct configuration of AASA and DAL files is essential for seamless functionality.
+- Ensuring URL structure consistency minimizes link failures.
+- Implement security measures like authentication checks and token validation.
+- Testing in a staging environment is crucial before production deployment.
+
